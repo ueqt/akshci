@@ -23,6 +23,7 @@
     $Credentials = New-Object System.Management.Automation.PSCredential ("CORP\LabAdmin", $password)
 
     Invoke-Command -ComputerName $servers -Credential $Credentials -Authentication Credssp -ScriptBlock {
+        Import-Module AksHci
         Initialize-AksHciNode
     }
 
