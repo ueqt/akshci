@@ -44,6 +44,7 @@ MSLab\Scenarios\AzSHCI and Kubernetes\Scenario.ps1
 New-AksHciCluster -Name demo -linuxNodeCount 1 -linuxNodeVmSize Standard_D8s_v3  -windowsNodeCount 1 -windowsNodeVmSize Standard_D2s_v3 -controlplaneVmSize Standard_A2_v2 -EnableADAuth -loadBalancerVmSize Standard_A2_v2
 # install one linux and one windows node
 # in region Install required modules for AKSHCI if copy failed, manually copy C:\Program Files\WindowsPowerShell\Modules to \\azshci1\c$\Program Files\WindowsPowerShell\Modules and \\azshci2\c$\Program Files\WindowsPowerShell\Modules
+# before region 4 run Connect-AzAccount first
 ```
 
 ```bash
@@ -62,6 +63,8 @@ get-WSManInstance -ResourceURI winrm/config | Select-Object MaxEnvelopeSizekb
 set-WSManInstance -ResourceURI winrm/config -ValueSet @{MaxEnvelopeSizekb = "256000" }
 Invoke-Command -Session $ses -ScriptBlock {  set-WSManInstance -ResourceURI winrm/config -ValueSet @{MaxEnvelopeSizekb = "256000" }}
 ```
+
+Windows Administrator Tools -> Failover Cluster Manager
 
 
 ## install helm & rancher
