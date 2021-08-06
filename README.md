@@ -47,6 +47,8 @@ New-AksHciCluster -Name demo -linuxNodeCount 1 -linuxNodeVmSize Standard_D8s_v3 
 # before region 4 run Connect-AzAccount first
 ```
 
+https://docs.microsoft.com/en-us/azure-stack/aks-hci/troubleshoot-known-issues
+
 ```bash
 # Copy-Item fail solution
 # https://serverfault.com/questions/1020068/settings-to-upload-large-file-via-winrm-and-copy-item-powershell
@@ -68,4 +70,3 @@ Windows Administrator Tools -> Failover Cluster Manager
 
 
 ## install helm & rancher
-
