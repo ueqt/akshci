@@ -1,4 +1,4 @@
-#DC
+# DC
 #distribute modules to cluster nodes
 $ClusterName="AzSHCI-Cluster"
 $Servers=(Get-ClusterNode -Cluster $Clustername).Name

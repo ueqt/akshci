@@ -1,4 +1,5 @@
 # DC
+# IMPORTANT: need use self azure account for AAD, corp azure account is not valid
 
 #region Register Azure Stack HCI to Azure - if not registered, VMs are not added as cluster resources = AKS script will fail
 $ClusterName="AzSHCI-Cluster"

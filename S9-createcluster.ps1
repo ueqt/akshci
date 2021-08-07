@@ -1,9 +1,15 @@
+# DC
+
+# Disable CredSSP
+Disable-WSManCredSSP -Role Client
+Invoke-Command -ComputerName $servers -ScriptBlock { Disable-WSManCredSSP Server }
+
 #region create AKS HCI cluster
 #Jaromirk note: it would be great if I could specify HCI Cluster (like New-AksHciCluster -ComputerName)
 $ClusterName="AzSHCI-Cluster"
 $ClusterNode=(Get-ClusterNode -Cluster $clustername).Name | Select-Object -First 1
 Invoke-Command -ComputerName $ClusterNode -ScriptBlock {
-    New-AksHciCluster -Name demo -linuxNodeCount 1 -linuxNodeVmSize Standard_D16s_v3 -windowsNodeCount 1 -windowsNodeVmSize Standard_D16s_v3 -controlplaneVmSize Standard_A2_v2 -EnableADAuth -loadBalancerVmSize Standard_A2_v2 #smallest possible VMs
+    New-AksHciCluster -Name demo -linuxNodeCount 1 -linuxNodeVmSize Standard_D8s_v3 -windowsNodeCount 1 -windowsNodeVmSize Standard_D8s_v3 -controlplaneVmSize Standard_A2_v2 -EnableADAuth -loadBalancerVmSize Standard_A2_v2 #smallest possible VMs
 }
 
 #distribute kubeconfig to other nodes (just to make it symmetric)
