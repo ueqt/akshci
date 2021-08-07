@@ -47,6 +47,7 @@ New-AksHciCluster -Name demo -linuxNodeCount 1 -linuxNodeVmSize Standard_D8s_v3 
 # in S6 Install required modules for AKSHCI if copy failed, manually copy C:\Program Files\WindowsPowerShell\Modules to \\azshci1\c$\Program Files\WindowsPowerShell\Modules and \\azshci2\c$\Program Files\WindowsPowerShell\Modules
 
 # if rerun S7, please delete volume AKS if exists in S10 first.
+# S7 refer to https://docs.microsoft.com/en-us/azure-stack/aks-hci/kubernetes-walkthrough-powershell
 ```
 
 https://docs.microsoft.com/en-us/azure-stack/aks-hci/troubleshoot-known-issues
@@ -70,5 +71,6 @@ Invoke-Command -Session $ses -ScriptBlock {  set-WSManInstance -ResourceURI winr
 
 Windows Administrator Tools -> Failover Cluster Manager
 
+https://www.locktar.nl/programming/powershell/upgrading-powershellget-to-the-latest-version/
 
 ## install helm & rancher
