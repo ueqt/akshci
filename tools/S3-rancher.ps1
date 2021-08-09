@@ -42,16 +42,16 @@ kubectl -n cattle-system rollout status deploy/rancher
 
 kubectl -n cattle-system get deploy rancher
 
-function Get-ScriptDirectory {
-    if ($psise) {
-        Split-Path $psise.CurrentFile.FullPath
-    }
-    else {
-        $global:PSScriptRoot
-    }
-}
+# function Get-ScriptDirectory {
+#     if ($psise) {
+#         Split-Path $psise.CurrentFile.FullPath
+#     }
+#     else {
+#         $global:PSScriptRoot
+#     }
+# }
 
-$path=Get-ScriptDirectory
+# $path=Get-ScriptDirectory
 
 # kubectl patch svc rancher -n cattle-system --patch "$(cat $path\rancher-svc-patch.yaml)"
 
