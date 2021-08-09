@@ -1,21 +1,23 @@
 # *********************
 # you can change VMSize
 
+$ClusterName="AzSHCI-Cluster"
+$Servers=(Get-ClusterNode -Cluster $ClusterName).Name
+
 # Disable CredSSP
 Disable-WSManCredSSP -Role Client
-Invoke-Command -ComputerName $servers -ScriptBlock { Disable-WSManCredSSP Server }
+Invoke-Command -ComputerName $Servers -ScriptBlock { Disable-WSManCredSSP Server }
 
 #region create AKS HCI cluster
 #Jaromirk note: it would be great if I could specify HCI Cluster (like New-AksHciCluster -ComputerName)
-$ClusterName="AzSHCI-Cluster"
-$ClusterNode=(Get-ClusterNode -Cluster $clustername).Name | Select-Object -First 1
+$ClusterNode=(Get-ClusterNode -Cluster $Clustername).Name | Select-Object -First 1
 Invoke-Command -ComputerName $ClusterNode -ScriptBlock {
     New-AksHciCluster -Name demo -linuxNodeCount 1 -linuxNodeVmSize Standard_D8s_v3 -windowsNodeCount 1 -windowsNodeVmSize Standard_D8s_v3 -controlplaneVmSize Standard_A2_v2 -EnableADAuth -loadBalancerVmSize Standard_A2_v2 #smallest possible VMs
 }
 
 #distribute kubeconfig to other nodes (just to make it symmetric)
 #Jaromirk note: I think this would be useful to do with new-akshcicluster
-$ClusterNodes=(Get-ClusterNode -Cluster $clustername).Name
+$ClusterNodes=(Get-ClusterNode -Cluster $Clustername).Name
 $FirstSession=New-PSSession -ComputerName ($ClusterNodes | Select-Object -First 1)
 $OtherSessions=New-PSSession -ComputerName ($ClusterNodes | Select-Object -Skip 1)
 #copy kube locally
@@ -49,4 +51,14 @@ Standard_K8S2_v1 2   2
 Standard_K8S3_v1 4   6
 
 #>
+#endregion
+
+#region Remove Cluster
+
+#$ClusterName="AzSHCI-Cluster"
+#$ClusterNode=(Get-ClusterNode -Cluster $Clustername).Name | Select-Object -First 1
+#Invoke-Command -ComputerName $ClusterNode -ScriptBlock {
+#    Remove-AksHciCluster -Name demo
+#}
+
 #endregion

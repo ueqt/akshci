@@ -9,7 +9,14 @@ kubectl version --client
 cd ~
 mkdir .kube
 cd .kube
-New-Item config -type file
+# New-Item config -type file
+
+# Enable CredSSP
+# Temporarily enable CredSSP delegation to avoid double-hop issue
+foreach ($Server in $Servers){
+    Enable-WSManCredSSP -Role "Client" -DelegateComputer $Server -Force
+}
+Invoke-Command -ComputerName $Servers -ScriptBlock { Enable-WSManCredSSP Server -Force }
 
 $ClusterName="AzSHCI-Cluster"
 $Servers=(Get-ClusterNode -Cluster $ClusterName).Name
@@ -18,7 +25,7 @@ $Credentials = New-Object System.Management.Automation.PSCredential ("CORP\LabAd
 
 Invoke-Command -ComputerName $Servers[0] -Credential $Credentials -Authentication Credssp -ScriptBlock {
     Get-AksHciCredential -Name demo  #demo is akscluster's name
+    #Copy kubeconfig to other/local computer
+    Copy-Item -Path "$env:userprofile\.kube" -Destination "\\Mgmt\c$\Users\labadmin\.kube" -Recurse -Force
 }
 
-#Copy kubeconfig to other/local computer
-Copy-Item -Path "$env:userprofile\.kube" -Destination XXX -Recurse -Force
