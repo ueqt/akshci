@@ -1,6 +1,18 @@
 # akshci
 aks-hci
 
+## create VM
+
+https://aka.ms/WS2022AzurePreview
+
+```bash
+# use up url to install Windows Servier 2022
+# check `spot` to save cost
+# select `Korea Central` to save cost
+```
+
+* VM internal ip must not 10.0.0.x, because it will conflict with aks ip
+
 ## instal HCI
 
 ```bash
@@ -15,7 +27,7 @@ cd /MSLab/Scripts
 ./Tools/DownloadLatestCUs.ps1 # download CU for Windows Server 2019 CU, Azure Stack HCI 20H2,Windows 10 20H2
 ./2_CreateParentDisks.ps1 # select 2019 iso and CU
 # Copy ParentDisks for quick install
-# Copy LabConfig.ps1 to /MSLab/Scripts
+# Copy hci/LabConfig.ps1 to /MSLab/Scripts
 ./3_Deploy.ps1
 # after that in Hyper-V Manager you can see 4 VM, 1 DC(for AD), 1 Manager, 2 node
 ```
@@ -23,18 +35,14 @@ cd /MSLab/Scripts
 use windows server 2019 as manager is better than win10
 
 ```bash
-# after 2 done, you can backup LAB folder
-# if need redeploy, just delete all vm, and then copy delete LAB, and copy LAB backup, then you can rerun 3_deploy.ps1
+# if need redeploy, just run cleanup.ps1, and then you can rerun 3_deploy.ps1
 ```
 
 ## install AKS
 
-* please use dynamic ip for public ip, if static ip install aks will timeout
-
 ```bash
 # (Obsolute)MSLab\Scenarios\AzSHCI and Kubernetes\Scenario.ps1
-# use S0-S10 to install AKS
-# Pay attention to run machines(first line each file).
+# run S0-S9 on Mgmt to install AKS
 
 # you can use edge access https://localhost to access WAC
 # in WAC, Cluster Manager add AzSHci-Cluster
@@ -44,9 +52,8 @@ use windows server 2019 as manager is better than win10
 # S9 can change VM size
 New-AksHciCluster -Name demo -linuxNodeCount 1 -linuxNodeVmSize Standard_D8s_v3  -windowsNodeCount 1 -windowsNodeVmSize Standard_D2s_v3 -controlplaneVmSize Standard_A2_v2 -EnableADAuth -loadBalancerVmSize Standard_A2_v2
 # install one linux and one windows node
-# in S6 Install required modules for AKSHCI if copy failed, manually copy C:\Program Files\WindowsPowerShell\Modules to \\azshci1\c$\Program Files\WindowsPowerShell\Modules and \\azshci2\c$\Program Files\WindowsPowerShell\Modules
 
-# if rerun S7, please delete volume AKS if exists in S10 first.
+# if rerun S7, please delete volume AKS in WAC.
 # S7 refer to https://docs.microsoft.com/en-us/azure-stack/aks-hci/kubernetes-walkthrough-powershell
 ```
 

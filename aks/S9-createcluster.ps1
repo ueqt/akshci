@@ -1,4 +1,5 @@
-# DC
+# *********************
+# you can change VMSize
 
 # Disable CredSSP
 Disable-WSManCredSSP -Role Client

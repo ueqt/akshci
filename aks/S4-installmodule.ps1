@@ -1,4 +1,3 @@
-# DC
 #region Install required modules for AKSHCI https://docs.microsoft.com/en-us/azure-stack/aks-hci/kubernetes-walkthrough-powershell
 Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
 Install-Module -Name PowershellGet -Force -Confirm:$false -SkipPublisherCheck
