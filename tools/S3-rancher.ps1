@@ -24,8 +24,15 @@ helm repo add jetstack https://charts.jetstack.io
 # Update your local Helm chart repository cache
 helm repo update
 
+# taint windows node first, otherwise cert-manager will fail
+#kubectl taint nodes --all type=windows:NoSchedule
+#kubectl taint nodes --all type:NoSchedule-
+kubectl taint nodes -l beta.kubernetes.io/os=windows type=windows:NoSchedule
+
 # Install the cert-manager Helm chart
 helm install cert-manager jetstack/cert-manager --namespace cert-manager --version v1.0.4
+
+# if fail run helm uninstall cert-manager jetstack/cert-manager --namespace cert-manager and rerun last command
 
 kubectl get pods --namespace cert-manager
 
@@ -34,3 +41,22 @@ helm install rancher rancher-stable/rancher --namespace cattle-system --set host
 kubectl -n cattle-system rollout status deploy/rancher
 
 kubectl -n cattle-system get deploy rancher
+
+function Get-ScriptDirectory {
+    if ($psise) {
+        Split-Path $psise.CurrentFile.FullPath
+    }
+    else {
+        $global:PSScriptRoot
+    }
+}
+
+$path=Get-ScriptDirectory
+
+# kubectl patch svc rancher -n cattle-system --patch "$(cat $path\rancher-svc-patch.yaml)"
+
+kubectl patch svc rancher -n cattle-system -p '{\"spec\": {\"ports\": [{\"port\": 443,\"targetPort\": 443,\"name\": \"https\"},{\"port\": 80,\"targetPort\": 80,\"name\": \"http\"}],\"type\": \"LoadBalancer\"}}'
+
+kubectl get svc -n cattle-system
+
+# you can access https://<EXTERNAL-IP for rancher>
