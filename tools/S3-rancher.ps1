@@ -57,6 +57,8 @@ kubectl -n cattle-system get deploy rancher
 
 kubectl patch svc rancher -n cattle-system -p '{\"spec\": {\"ports\": [{\"port\": 443,\"targetPort\": 443,\"name\": \"https\"},{\"port\": 80,\"targetPort\": 80,\"name\": \"http\"}],\"type\": \"LoadBalancer\"}}'
 
+Start-Sleep 15
+
 kubectl get svc -n cattle-system
 
 # you can access https://<EXTERNAL-IP for rancher>

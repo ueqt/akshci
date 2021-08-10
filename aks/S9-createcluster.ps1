@@ -5,6 +5,9 @@ $ClusterName="AzSHCI-Cluster"
 $Servers=(Get-ClusterNode -Cluster $ClusterName).Name
 
 # Disable CredSSP
+#****************************
+# shutdown 2 nodes vm first, and then turn on, and also close this powershell session and restart a new session, wait a moment then run
+
 Disable-WSManCredSSP -Role Client
 Invoke-Command -ComputerName $Servers -ScriptBlock { Disable-WSManCredSSP Server }
 
