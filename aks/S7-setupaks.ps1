@@ -26,6 +26,9 @@ Invoke-Command -ComputerName $Servers -Credential $Credentials -Authentication C
     Initialize-AksHciNode
 }
 
+# ********************************
+# if this error: Cannot bind argument to parameter 'Path' because it is an empty string. please manually delete volume in WAC 
+# if volume exists please manually delete volume in WAC
 # Create  volume for AKS
 New-Volume -FriendlyName $VolumeName -CimSession $ClusterName -Size 1TB -StoragePoolFriendlyName S2D*
 # make sure failover clustering management tools are installed on nodes

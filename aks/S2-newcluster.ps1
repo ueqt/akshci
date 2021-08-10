@@ -19,7 +19,7 @@ $accounts+="corp\Domain Admins"
 New-SmbShare -Name $WitnessName -Path "c:\Shares\$WitnessName" -FullAccess $accounts -CimSession DC
 # Set NTFS permissions
 Invoke-Command -ComputerName DC -ScriptBlock {(Get-SmbShare $using:WitnessName).PresetPathAcl | Set-Acl}
-# Set Quorum
+# Set Quorum if always fail, please sign in DC first
 Set-ClusterQuorum -Cluster $ClusterName -FileShareWitness "\\DC\$WitnessName"
 
 #Enable S2D
