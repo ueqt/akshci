@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
- name: pvc-akshci-csi
+ name: windowsonce-pvc
 spec:
  accessModes:
  - ReadWriteOnce
@@ -27,16 +27,21 @@ spec:
       name: win-webserver 
     spec: 
       containers: 
-      - name: windowswebserver 
-        image: mcr.microsoft.com/windows/servercore/iis:windowsservercore-ltsc2019 
-        ports:  
-          - containerPort: 80    
-        volumeMounts: 
-            - name: akshciscsi 
+        - name: windowswebserver 
+          image: mcr.microsoft.com/windows/servercore/iis:windowsservercore-ltsc2019 
+          ports:  
+            - containerPort: 80    
+          volumeMounts: 
+            - name: windowsonce-pv 
               mountPath: "/mnt/akshciscsi" 
-    volumes: 
-      - name: akshciscsi 
+      volumes: 
+        - name: windowsonce-pv 
           persistentVolumeClaim: 
-            claimName:  pvc-akshci-csi 
-    nodeSelector: 
-      kubernetes.io/os: windows
+            claimName:  windowsonce-pvc 
+      nodeSelector: 
+        kubernetes.io/os: windows
+      tolerations:
+        - key: "type"
+          operator: "Equal"
+          value: "windows"
+          effect: "NoSchedule"
