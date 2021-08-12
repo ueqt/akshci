@@ -1,11 +1,4 @@
-# first create a share folder on this pc
-# 共享名
-$ShareName = 'share'
-# 共享路径
-$Path = 'c:\share'
-
-New-Item -Force -ItemType directory -Path $Path
-New-SmbShare -Name $ShareName -Path $Path -FullAccess everyone
+# https://github.com/kubernetes-csi/csi-driver-smb/blob/master/deploy/example/e2e_usage.md
 
 kubectl apply -f ./yaml/windowsmany.yaml
 
@@ -15,7 +8,13 @@ kubectl get pvc
 
 kubectl describe pvc windowsmany-pvc
 
+kubectl get pv
+
 kubectl get pods -o wide
+
+kubectl describe pod windowsmany-pod1
+
+kubectl describe pod windowsmany-pod2
 
 # kubectl exec -it <win-webserver-xxx> cmd.exe
 

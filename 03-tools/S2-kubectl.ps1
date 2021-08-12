@@ -29,3 +29,12 @@ Invoke-Command -ComputerName $Servers[0] -Credential $Credentials -Authenticatio
 #Copy kubeconfig to local computer
 Copy-Item -Path "$env:userprofile\.kube" -Destination $env:userprofile -FromSession $FirstSession -Recurse -Force
 
+If (Test-Path Alias:k) { Remove-Item Alias:k }
+Set-Alias -Name k -Value kubectl
+function kg {
+    kubectl get $args
+}
+function kd {
+    kubectl describe $args
+}
+

@@ -4,7 +4,7 @@ metadata:
   name: smb-csi
 provisioner: smb.csi.akshci.com
 parameters:
-   source: \\MGMT.corp.contoso.com\share
+   source: "\\\\DC.corp.contoso.com\\share"
    csi.storage.k8s.io/node-stage-secret-name: "smbcreds"
    csi.storage.k8s.io/node-stage-secret-namespace: "default"
    createSubDir: "false"  # optional: create a sub dir for new volume
@@ -49,6 +49,11 @@ spec:
       volumeMounts:
         - mountPath: "/data"
           name: windowsmany-pv1
+  tolerations:
+    - key: "type"
+      operator: "Equal"
+      value: "windows"
+      effect: "NoSchedule"
 ---
 apiVersion: v1
 kind: Pod
@@ -71,3 +76,8 @@ spec:
       volumeMounts:
         - mountPath: "/data"
           name:  windowsmany-pv2
+  tolerations:
+    - key: "type"
+      operator: "Equal"
+      value: "windows"
+      effect: "NoSchedule"
