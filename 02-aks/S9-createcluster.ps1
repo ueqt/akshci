@@ -46,10 +46,14 @@ Standard_K8S3_v1 4   6
 
 #region Remove Cluster
 
-#$ClusterName="AzSHCI-Cluster"
-#$ClusterNode=(Get-ClusterNode -Cluster $Clustername).Name | Select-Object -First 1
-#Invoke-Command -ComputerName $ClusterNode -ScriptBlock {
-#    Remove-AksHciCluster -Name demo
-#}
+# $ClusterName="AzSHCI-Cluster"
+# $ClusterNode=(Get-ClusterNode -Cluster $Clustername).Name | Select-Object -First 1
+# Invoke-Command -ComputerName $ClusterNode -ScriptBlock {
+#     Remove-AksHciCluster -Name demo
+# }
 
 #endregion
+
+# https://docs.microsoft.com/en-us/azure-stack/aks-hci/ssh-connection
+kubectl get nodes -o wide
+ssh -i $env:SYSTEMDRIVE\AksHci\.ssh\akshci_rsa administrator@10.0.0.22
