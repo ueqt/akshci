@@ -1,3 +1,5 @@
+# https://blog.engineer-memo.com/2021/07/15/aks-on-azure-stack-hci-%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6%E3%81%AE%E3%83%A1%E3%83%A2/amp/#i-5
+
 # first create a share folder on this pc
 # 共享名
 $ShareName = 'share'

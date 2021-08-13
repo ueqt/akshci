@@ -62,3 +62,6 @@ Start-Sleep 15
 kubectl get svc -n cattle-system
 
 # you can access https://<EXTERNAL-IP for rancher>
+
+# helm ls -A
+# helm uninstall rancher -n cattle-system
