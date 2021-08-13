@@ -4,7 +4,7 @@ metadata:
   name: smb-csi
 provisioner: smb.csi.akshci.com
 parameters:
-   source: "\\\\DC.corp.contoso.com\\share"
+   source: \\mgmt\share
    csi.storage.k8s.io/node-stage-secret-name: "smbcreds"
    csi.storage.k8s.io/node-stage-secret-namespace: "default"
    createSubDir: "false"  # optional: create a sub dir for new volume

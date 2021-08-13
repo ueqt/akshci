@@ -30,6 +30,9 @@ kubectl get CSIDriver -A
 #kubectl logs csi-smb-node-cw4hc -c smb -n kube-system
 #kubectl logs csi-smb-node-cw4hc -c node-driver-registrar -n kube-system
 
+# https://github.com/kubernetes-csi/csi-driver-smb/blob/master/docs/csi-debug.md
+
+# **** windows access smb
 
 # $User = "CORP\LabAdmin"
 # $PWord = ConvertTo-SecureString -String "LS1setup!" -AsPlainText -Force
@@ -38,3 +41,12 @@ kubectl get CSIDriver -A
 # Get-SmbGlobalMapping
 # cd x:
 # dir
+
+# **** linux access smb
+
+# check cifs mount inside driver
+# kubectl exec -it csi-smb-node-cvgbs -n kube-system -c smb -- mount | grep cifs
+
+# mkdir /tmp/test
+# sudo mount -v -t cifs \\mgmt.corp.contoso.com\share /tmp/test -o vers=3.0,username=LabAdmin,password="LS1setup!",domain="CORP",dir_mode=0777,file_mode=0777,cache=strict,actimeo=30
+# sudo mount | grep cifs

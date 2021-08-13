@@ -15,7 +15,7 @@ kubectl describe pvc linuxonce-pvc
 
 kubectl get pods -o wide
 
-kubectl exec -it linuxonce-pvc /bin/bash
+kubectl exec linuxonce-pod -it -- /bin/bash
 
 # cd /data
 # touch 1.txt

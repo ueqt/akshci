@@ -10,7 +10,7 @@ kubectl describe pvc windowsonce-pvc
 
 kubectl get pods -o wide
 
-# kubectl exec -it <win-webserver-xxx> cmd.exe
+# kubectl exec <win-webserver-xxx> -it -- cmd.exe
 
 # dir
 # cd /mnt

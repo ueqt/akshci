@@ -16,12 +16,18 @@ kubectl describe pod windowsmany-pod1
 
 kubectl describe pod windowsmany-pod2
 
-# kubectl exec -it <win-webserver-xxx> cmd.exe
+kubectl exec windowsmany-pod1 -it -- cmd.exe
 
 # dir
-# cd /mnt
-# cd akshciscsi
+# cd data
 # echo "1" > 1.txt
 # dir
+
+kubectl exec windowsmany-pod2 -it -- cmd.exe
+
+# dir
+# cd data
+# dir
+# cat 1.txt
 
 # kubectl delete -f ./yaml/windowsmany.yaml
