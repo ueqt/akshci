@@ -42,7 +42,7 @@ use windows server 2019 as manager is better than win10
 
 ```bash
 # (Obsolute)MSLab\Scenarios\AzSHCI and Kubernetes\Scenario.ps1
-# run S0-S10 on Mgmt to install AKS
+# run S0-S8 on Mgmt to install AKS
 
 # you can use edge access https://localhost to access WAC
 # in WAC, Cluster Manager add AzSHci-Cluster
