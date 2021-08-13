@@ -1,4 +1,5 @@
 # https://github.com/kubernetes-csi/csi-driver-smb/blob/master/docs/csi-debug.md
+# https://github.com/Azure/aks-hci/issues/116
 
 kubectl get po -o wide -n kube-system | grep csi-smb-controller
 

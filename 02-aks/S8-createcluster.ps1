@@ -66,8 +66,3 @@ Copy-Item -Path "$env:userprofile\.kube" -Destination "$env:userprofile\Download
 Foreach ($OtherSession in $OtherSessions){
     Copy-Item -Path "$env:userprofile\Downloads\.kube" -Destination $env:userprofile -ToSession $OtherSession -Recurse -Force
 }
-
-
-# https://docs.microsoft.com/en-us/azure-stack/aks-hci/ssh-connection
-# kubectl get nodes -o wide
-# ssh -i $env:SYSTEMDRIVE\AksHci\.ssh\akshci_rsa administrator@10.0.0.22
