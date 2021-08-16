@@ -29,6 +29,11 @@ Invoke-Command -ComputerName $Servers[0] -Credential $Credentials -Authenticatio
 #Copy kubeconfig to local computer
 Copy-Item -Path "$env:userprofile\.kube" -Destination $env:userprofile -FromSession $FirstSession -Recurse -Force
 
+# taint windows node first, otherwise cert-manager will fail
+#kubectl taint nodes --all type=windows:NoSchedule
+#kubectl taint nodes --all type:NoSchedule-
+kubectl taint nodes -l beta.kubernetes.io/os=windows type=windows:NoSchedule
+
 If (Test-Path Alias:k) { Remove-Item Alias:k }
 Set-Alias -Name k -Value kubectl
 function kg {

@@ -24,11 +24,6 @@ helm repo add jetstack https://charts.jetstack.io
 # Update your local Helm chart repository cache
 helm repo update
 
-# taint windows node first, otherwise cert-manager will fail
-#kubectl taint nodes --all type=windows:NoSchedule
-#kubectl taint nodes --all type:NoSchedule-
-kubectl taint nodes -l beta.kubernetes.io/os=windows type=windows:NoSchedule
-
 # Install the cert-manager Helm chart
 helm install cert-manager jetstack/cert-manager --namespace cert-manager --version v1.0.4
 
