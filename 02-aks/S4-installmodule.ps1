@@ -32,4 +32,10 @@ Unregister-PSRepository -Name AksHciPSGallery -ErrorAction:SilentlyContinue
 Unregister-PSRepository -Name AksHciPSGalleryPreview -ErrorAction:SilentlyContinue
 Exit
 
+function Blue {
+    process { Write-Host $_ -ForegroundColor Blue }
+}
+
+Write-Output "Please close your powershell and reopen" | Blue
+
 #endregion
