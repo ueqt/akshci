@@ -1,20 +1,16 @@
+. "$PSScriptRoot\..\config.ps1"
+
 # *********************
 # you can change VMSize
 
-$ClusterName="AzSHCI-Cluster"
-$Servers=(Get-ClusterNode -Cluster $ClusterName).Name
-
-# Disable CredSSP
 #****************************
 # shutdown 2 nodes vm first, and then turn on, and also close this powershell session and restart a new session, wait a moment then run
 
-Disable-WSManCredSSP -Role Client
-Invoke-Command -ComputerName $Servers -ScriptBlock { Disable-WSManCredSSP Server }
+DisableCredSSP
 
 #region create AKS HCI cluster
 #Jaromirk note: it would be great if I could specify HCI Cluster (like New-AksHciCluster -ComputerName)
-$ClusterNode=(Get-ClusterNode -Cluster $Clustername).Name | Select-Object -First 1
-Invoke-Command -ComputerName $ClusterNode -ScriptBlock {
+Invoke-Command -ComputerName $HciServers[0] -ScriptBlock {
     New-AksHciCluster -Name demo -linuxNodeCount 1 -linuxNodeVmSize Standard_D8s_v3 -windowsNodeCount 1 -windowsNodeVmSize Standard_D8s_v3 -controlplaneVmSize Standard_A2_v2 -EnableADAuth -loadBalancerVmSize Standard_A2_v2 #smallest possible VMs
 }
 
@@ -46,8 +42,7 @@ Standard_K8S3_v1 4   6
 
 #region Remove Cluster
 
-# $ClusterName="AzSHCI-Cluster"
-# $ClusterNode=(Get-ClusterNode -Cluster $Clustername).Name | Select-Object -First 1
+# $ClusterNode=(Get-ClusterNode -Cluster $HciClusterName).Name | Select-Object -First 1
 # Invoke-Command -ComputerName $ClusterNode -ScriptBlock {
 #     Remove-AksHciCluster -Name demo
 # }
@@ -57,12 +52,15 @@ Standard_K8S3_v1 4   6
 
 #distribute kubeconfig to other nodes (just to make it symmetric)
 #Jaromirk note: I think this would be useful to do with new-akshcicluster
-$ClusterNodes=(Get-ClusterNode -Cluster $Clustername).Name
-$FirstSession=New-PSSession -ComputerName ($ClusterNodes | Select-Object -First 1)
-$OtherSessions=New-PSSession -ComputerName ($ClusterNodes | Select-Object -Skip 1)
+EnableCredSSP
+
+$FirstSession=New-PSSession -ComputerName ($HciServers | Select-Object -First 1)
+$OtherSessions=New-PSSession -ComputerName ($HciServers | Select-Object -Skip 1)
 #copy kube locally
 Copy-Item -Path "$env:userprofile\.kube" -Destination "$env:userprofile\Downloads" -FromSession $FirstSession -Recurse -Force
 #copy kube to other nodes
 Foreach ($OtherSession in $OtherSessions){
     Copy-Item -Path "$env:userprofile\Downloads\.kube" -Destination $env:userprofile -ToSession $OtherSession -Recurse -Force
 }
+
+DisableCredSSP

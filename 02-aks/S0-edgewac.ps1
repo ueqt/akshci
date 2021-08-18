@@ -1,8 +1,9 @@
 #region install edge
+
 Start-BitsTransfer -Source "https://aka.ms/edge-msi" -Destination "$env:USERPROFILE\Downloads\MicrosoftEdgeEnterpriseX64.msi"
-#start install
+# start install
 Start-Process -Wait -Filepath msiexec.exe -Argumentlist "/i $env:UserProfile\Downloads\MicrosoftEdgeEnterpriseX64.msi /q"
-#start Edge
+# start Edge
 start-sleep 5
 & "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
 
@@ -10,9 +11,8 @@ start-sleep 5
 
 #region install WAC
 
-#Download Windows Admin Center if not present
+# Download Windows Admin Center if not present
 Start-BitsTransfer -Source https://aka.ms/WACDownload -Destination "$env:USERPROFILE\Downloads\WindowsAdminCenter.msi"
-
 Start-Process msiexec.exe -Wait -ArgumentList "/i $env:USERPROFILE\Downloads\WindowsAdminCenter.msi /qn /L*v log.txt REGISTRY_REDIRECT_PORT_80=1 SME_PORT=443 SSL_CERTIFICATE_OPTION=generate"
 
 # *****************************************

@@ -1,3 +1,5 @@
+. "$PSScriptRoot\..\..\config.ps1"
+
 # https://docs.microsoft.com/en-us/azure-stack/aks-hci/ad-sso
 # https://docs.microsoft.com/zh-cn/azure-stack/aks-hci/ad-sso
 # https://techcommunity.microsoft.com/t5/azure-stack-blog/aks-hci-now-supports-strong-authentication-using-active/ba-p/2121246
@@ -8,22 +10,22 @@
 # Create the API server AD Account and the keytab file
 Add-WindowsFeature RSAT-AD-PowerShell
 Get-WindowsFeature -Name RSAT-AD-PowerShell
-# New-ADUser -Name apiserver -ServicePrincipalNames k8s/apiserver -AccountPassword (ConvertTo-SecureString "LS1setup!" -AsPlainText -Force) -KerberosEncryptionType AES128 -Enabled 1
+# New-ADUser -Name apiserver -ServicePrincipalNames k8s/apiserver -AccountPassword (ConvertTo-SecureString "$DomainAdminPassword" -AsPlainText -Force) -KerberosEncryptionType AES128 -Enabled 1
 Get-ADUser -Filter *
-# Remove-ADUser -Identity "CN=apiserver,CN=Users,DC=Corp,DC=contoso,DC=com"
+# Remove-ADUser -Identity "CN=apiserver,CN=Users,DC=$Domain,DC=contoso,DC=com"
 
-# ktpass /out current.keytab /princ k8s/apiserver@CORP /mapuser Corp\apiserver /crypto all /pass LS1setup! /ptype KRB5_NT_PRINCIPAL
+# ktpass /out current.keytab /princ k8s/apiserver@$(Domain) /mapuser $Domain\apiserver /crypto all /pass $DomainAdminPassword /ptype KRB5_NT_PRINCIPAL
 
-ktpass /out current.keytab /princ k8s/apiserver@CORP /mapuser Corp\LabAdmin /crypto all /pass LS1setup! /ptype KRB5_NT_PRINCIPAL
+ktpass /out current.keytab /princ k8s/apiserver@$(Domain) /mapuser $Domain\$DomainAdminUser /crypto all /pass $DomainAdminPassword /ptype KRB5_NT_PRINCIPAL
 
 whoami /user
 
-# (New-Object System.Security.Principal.NTAccount(Corp\apiserver)).Translate([System.Security.Principal.SecurityIdentifier]).value
+# (New-Object System.Security.Principal.NTAccount($Domain\apiserver)).Translate([System.Security.Principal.SecurityIdentifier]).value
 
 # kubectl logs ad-auth-webhook-xxx
 
 # Step 2: Install AD authentication
-Install-AksHciAdAuth -name demo -keytab .\current.keytab -SPN k8s/apiserver@CORP -adminUser Corp\LabAdmin
+Install-AksHciAdAuth -name demo -keytab .\current.keytab -SPN k8s/apiserver@$(Domain) -adminUser $Domain\$DomainAdminUser
 # Uninstall-AksHciAdAuth -name demo
 
 # Step 3: Test the AD webhook and keytab file

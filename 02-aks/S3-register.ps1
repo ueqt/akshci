@@ -1,8 +1,9 @@
+. "$PSScriptRoot\..\config.ps1"
+
 # *******************************************
 # IMPORTANT: need use self azure account for AAD, corp azure account is not valid
 
 #region Register Azure Stack HCI to Azure - if not registered, VMs are not added as cluster resources = AKS script will fail
-$ClusterName="AzSHCI-Cluster"
 
 # download Azure module
 Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
@@ -34,16 +35,15 @@ $authFactory = [Microsoft.Azure.Commands.Common.Authentication.AzureSession]::In
 $graphToken = $authFactory.Authenticate($azContext.Account, $azContext.Environment, $azContext.Tenant.Id, $null, [Microsoft.Azure.Commands.Common.Authentication.ShowDialog]::Never, $null, $graphTokenItemResource).AccessToken
 $armToken = $authFactory.Authenticate($azContext.Account, $azContext.Environment, $azContext.Tenant.Id, $null, [Microsoft.Azure.Commands.Common.Authentication.ShowDialog]::Never, $null, $armTokenItemResource).AccessToken
 $id = $azContext.Account.Id
-Register-AzStackHCI -SubscriptionID $subscriptionID -ComputerName $ClusterName -GraphAccessToken $graphToken -ArmAccessToken $armToken -AccountId $id
+Register-AzStackHCI -SubscriptionID $subscriptionID -ComputerName $HciClusterName -GraphAccessToken $graphToken -ArmAccessToken $armToken -AccountId $id
 
 # Install Azure Stack HCI RSAT Tools to all nodes
-$Servers=(Get-ClusterNode -Cluster $ClusterName).Name
-Invoke-Command -ComputerName $Servers -ScriptBlock {
+Invoke-Command -ComputerName $HciServers -ScriptBlock {
     Install-WindowsFeature -Name RSAT-Azure-Stack-HCI
 }
 
 # Validate registration (query on just one node is needed)
-Invoke-Command -ComputerName $ClusterName -ScriptBlock {
+Invoke-Command -ComputerName $HciClusterName -ScriptBlock {
     Get-AzureStackHCI
 }
-#endregion#region Register Azure Stack HCI to Azure - if not registered, VMs are not added as cluster resources = AKS script will fail
+#endregion

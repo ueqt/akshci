@@ -1,7 +1,6 @@
-$ClusterName="AzSHCI-Cluster"
+. "$PSScriptRoot\..\config.ps1"
 
-$Servers=(Get-ClusterNode -Cluster $ClusterName).Name
-Invoke-Command -ComputerName $Servers -ScriptBlock {
+Invoke-Command -ComputerName $HciServers -ScriptBlock {
     Install-Module -Name AksHci -Repository PSGallery -RequiredVersion 1.1.0 -AcceptLicense -Force
 }
 

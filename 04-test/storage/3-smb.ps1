@@ -1,3 +1,5 @@
+. "$PSScriptRoot\..\..\config.ps1"
+
 # https://blog.engineer-memo.com/2021/07/15/aks-on-azure-stack-hci-%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6%E3%81%AE%E3%83%A1%E3%83%A2/amp/#i-5
 
 # first create a share folder on this pc
@@ -11,8 +13,7 @@ New-SmbShare -Name $ShareName -Path $Path -FullAccess everyone
 
 # https://docs.microsoft.com/en-us/azure-stack/aks-hci/container-storage-interface-files
 
-$ClusterName="AzSHCI-Cluster"
-$ClusterNode=(Get-ClusterNode -Cluster $Clustername).Name | Select-Object -First 1
+$ClusterNode=(Get-ClusterNode -Cluster $HciClusterName).Name | Select-Object -First 1
 Invoke-Command -ComputerName $ClusterNode -ScriptBlock {
     Install-AksHciCsiSmb -clusterName demo
     #Uninstall-AksHciCsiSMB -clusterName demo
@@ -22,7 +23,7 @@ Invoke-Command -ComputerName $ClusterNode -ScriptBlock {
 # kubectl -n kube-system get pod -o wide --watch -l app=csi-smb-controller
 # kubectl -n kube-system get pod -o wide --watch -l app=csi-smb-node
 
-kubectl create secret generic smbcreds --from-literal username="LabAdmin" --from-literal password="LS1setup!" --from-literal domain="CORP"
+kubectl create secret generic smbcreds --from-literal username="$DomainAdminUser" --from-literal password=$DomainAdminPassword --from-literal domain=$Domain
 
 kubectl get CSIDriver -A
 
@@ -34,8 +35,8 @@ kubectl get CSIDriver -A
 
 # **** windows access smb
 
-# $User = "CORP\LabAdmin"
-# $PWord = ConvertTo-SecureString -String "LS1setup!" -AsPlainText -Force
+# $User = "$Domain\$DomainAdminUser"
+# $PWord = ConvertTo-SecureString -String $DomainAdminPassword -AsPlainText -Force
 # $Credential = New-Object –TypeName System.Management.Automation.PSCredential –ArgumentList $User, $Pword
 # New-SmbGlobalMapping -LocalPath x: -RemotePath \\mgmt\share -Credential $Credential
 # Get-SmbGlobalMapping
@@ -48,5 +49,5 @@ kubectl get CSIDriver -A
 # kubectl exec -it csi-smb-node-cvgbs -n kube-system -c smb -- mount | grep cifs
 
 # mkdir /tmp/test
-# sudo mount -v -t cifs \\mgmt.corp.contoso.com\share /tmp/test -o vers=3.0,username=LabAdmin,password="LS1setup!",domain="CORP",dir_mode=0777,file_mode=0777,cache=strict,actimeo=30
+# sudo mount -v -t cifs \\mgmt.$Domain.contoso.com\share /tmp/test -o vers=3.0,username=$DomainAdminUser,password=$DomainAdminPassword,domain=$Domain,dir_mode=0777,file_mode=0777,cache=strict,actimeo=30
 # sudo mount | grep cifs
