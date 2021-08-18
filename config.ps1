@@ -5,6 +5,7 @@ $HciClusterName="AzSHCI-Cluster"
 $HciServers="AzSHCI1","AzSHCI2" # $HciServers=(Get-ClusterNode -Cluster $HciClusterName).Name
 # $ClusterNode=(Get-ClusterNode -Cluster $HciClusterName).Name | Select-Object -First 1
 $HciResourceGroupName="$HciClusterName-rg"
+$WorkloadClusterName="demo"
 
 function Blue {
     process { Write-Host $_ -ForegroundColor Blue }
@@ -29,6 +30,7 @@ Write-Output "DomainAdminPassword: $DomainAdminPassword" | Yellow
 Write-Output "HciClusterName: $HciClusterName" | Yellow
 Write-Output "HciServers: $HciServers" | Yellow
 Write-Output "HciResourceGroupName: $HciResourceGroupName" | Yellow
+Write-Output "WorkloadClusterName: $WorkloadClusterName" | Yellow
 
 function HciRunAll([scriptblock]$block) {
     Invoke-Command -ComputerName $HciServers -ScriptBlock {

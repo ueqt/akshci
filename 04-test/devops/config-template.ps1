@@ -1,0 +1,5 @@
+$appId =''
+$password =''
+$tenant =''
+$appClonedRepo =''
+$subscriptionId =''

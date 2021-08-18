@@ -11,7 +11,7 @@ DisableCredSSP
 #region create AKS HCI cluster
 #Jaromirk note: it would be great if I could specify HCI Cluster (like New-AksHciCluster -ComputerName)
 Invoke-Command -ComputerName $HciServers[0] -ScriptBlock {
-    New-AksHciCluster -Name demo -linuxNodeCount 1 -linuxNodeVmSize Standard_D8s_v3 -windowsNodeCount 1 -windowsNodeVmSize Standard_D8s_v3 -controlplaneVmSize Standard_A2_v2 -EnableADAuth -loadBalancerVmSize Standard_A2_v2 #smallest possible VMs
+    New-AksHciCluster -Name $using:WorkloadClusterName -linuxNodeCount 1 -linuxNodeVmSize Standard_D8s_v3 -windowsNodeCount 1 -windowsNodeVmSize Standard_D8s_v3 -controlplaneVmSize Standard_A2_v2 -EnableADAuth -loadBalancerVmSize Standard_A2_v2 #smallest possible VMs
 }
 
 #VM Sizes
@@ -44,7 +44,7 @@ Standard_K8S3_v1 4   6
 
 # $ClusterNode=(Get-ClusterNode -Cluster $HciClusterName).Name | Select-Object -First 1
 # Invoke-Command -ComputerName $ClusterNode -ScriptBlock {
-#     Remove-AksHciCluster -Name demo
+#     Remove-AksHciCluster -Name $using:WorkloadClusterName
 # }
 
 #endregion

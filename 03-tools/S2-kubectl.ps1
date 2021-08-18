@@ -18,7 +18,7 @@ $Credentials = New-Object System.Management.Automation.PSCredential ("$Domain\$D
 
 $FirstSession=New-PSSession -ComputerName ($HciServers | Select-Object -First 1)
 Invoke-Command -ComputerName $HciServers[0] -Credential $Credentials -Authentication Credssp -ScriptBlock {
-    Get-AksHciCredential -Name demo  #demo is akscluster's name
+    Get-AksHciCredential -Name $using:WorkloadClusterName
 }
 #Copy kubeconfig to local computer
 Copy-Item -Path "$env:userprofile\.kube" -Destination $env:userprofile -FromSession $FirstSession -Recurse -Force
