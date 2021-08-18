@@ -25,11 +25,11 @@ whoami /user
 # kubectl logs ad-auth-webhook-xxx
 
 # Step 2: Install AD authentication
-Install-AksHciAdAuth -name demo -keytab .\current.keytab -SPN k8s/apiserver@$(Domain) -adminUser $Domain\$DomainAdminUser
-# Uninstall-AksHciAdAuth -name demo
+Install-AksHciAdAuth -name $WorkloadClusterName -keytab .\current.keytab -SPN k8s/apiserver@$(Domain) -adminUser $Domain\$DomainAdminUser
+# Uninstall-AksHciAdAuth -name $WorkloadClusterName
 
 # Step 3: Test the AD webhook and keytab file
-Get-AksHciCredential -name demo
+Get-AksHciCredential -name $WorkloadClusterName
 
 kubectl get pods -n=kube-system
 # check ad-auth-webhook-xxxx exists
@@ -38,7 +38,7 @@ kubectl get secrets -n=kube-system
 # check keytab exists
 
 # Step 4: Create the AD kubeconfig file
-Get-AksHciCredential -name demo -configPath .\AdKubeconfig -adAuth
+Get-AksHciCredential -name $WorkloadClusterName -configPath .\AdKubeconfig -adAuth
 
 # Step 5: Copy kubeconfig and other files to the client machine
 

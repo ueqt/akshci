@@ -15,8 +15,8 @@ New-SmbShare -Name $ShareName -Path $Path -FullAccess everyone
 
 $ClusterNode=(Get-ClusterNode -Cluster $HciClusterName).Name | Select-Object -First 1
 Invoke-Command -ComputerName $ClusterNode -ScriptBlock {
-    Install-AksHciCsiSmb -clusterName demo
-    #Uninstall-AksHciCsiSMB -clusterName demo
+    Install-AksHciCsiSmb -clusterName $WorkloadClusterName
+    #Uninstall-AksHciCsiSMB -clusterName $WorkloadClusterName
 }
 
 # https://github.com/kubernetes-csi/csi-driver-smb/blob/master/docs/csi-debug.md
