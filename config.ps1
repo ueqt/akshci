@@ -30,33 +30,32 @@ Write-Output "HciClusterName: $HciClusterName" | Yellow
 Write-Output "HciServers: $HciServers" | Yellow
 Write-Output "HciResourceGroupName: $HciResourceGroupName" | Yellow
 
-# function HciRunAll([scriptblock]$block) {
-#     Invoke-Command -ComputerName $HciServers -ScriptBlock {
-#         param([string]$RBlock, $args)        
-#         function Green {
-#             process { Write-Host $_ -ForegroundColor Green }
-#         }
-#         Write-Output " ===== $env:COMPUTERNAME start ===== " | Green
-#         [Scriptblock]::Create($RBlock).Invoke()
-#         Write-Output " ===== $env:COMPUTERNAME end ===== " | Green
-#     } -ArgumentList $block.ToString()
-# }
+function HciRunAll([scriptblock]$block) {
+    Invoke-Command -ComputerName $HciServers -ScriptBlock {
+        param([string]$RBlock, $args)        
+        function Green {
+            process { Write-Host $_ -ForegroundColor Green }
+        }
+        Write-Output " ===== $env:COMPUTERNAME start ===== " | Green
+        [Scriptblock]::Create($RBlock).Invoke()
+        Write-Output " ===== $env:COMPUTERNAME end ===== " | Green
+    } -ArgumentList $block.ToString()
+}
 
-# function HciRunOne([scriptblock]$block) {
-#     Invoke-Command -ComputerName $HciServers[0] -ScriptBlock {
-#         param([string]$RBlock)        
-#         function Green {
-#             process { Write-Host $_ -ForegroundColor Green }
-#         }
-#         Write-Output " ===== $env:COMPUTERNAME start ===== " | Green
-#         [Scriptblock]::Create($RBlock).Invoke()
-#         Write-Output " ===== $env:COMPUTERNAME end ===== " | Green
-#     } -ArgumentList $block.ToString()
-# }
+function HciRunOne([scriptblock]$block) {
+    Invoke-Command -ComputerName $HciServers[0] -ScriptBlock {
+        param([string]$RBlock)        
+        function Green {
+            process { Write-Host $_ -ForegroundColor Green }
+        }
+        Write-Output " ===== $env:COMPUTERNAME start ===== " | Green
+        [Scriptblock]::Create($RBlock).Invoke()
+        Write-Output " ===== $env:COMPUTERNAME end ===== " | Green
+    } -ArgumentList $block.ToString()
+}
 
-# $a=1
 # HciRunAll {
-#     Write-Output "$a"
+#     Write-Output "aaa"
 # }
 
 function EnableCredSSP {
@@ -74,6 +73,7 @@ function DisableCredSSP {
     Invoke-Command -ComputerName $HciServers -ScriptBlock { Disable-WSManCredSSP Server }
 }
 
+# add kubectl alias
 If (Test-Path Alias:k) { Remove-Item Alias:k }
 Set-Alias -Name k -Value kubectl
 function kg {
