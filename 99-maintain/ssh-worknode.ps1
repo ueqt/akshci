@@ -14,3 +14,5 @@ ssh -i $env:SYSTEMDRIVE\AksHci\.ssh\akshci_rsa clouduser@10.0.0.21
 
 # change password
 net user administrator *
+
+ssh -i C:\ClusterStorage\AKS\AksHCI\.ssh\akshci_rsa clouduser@10.0.0.103

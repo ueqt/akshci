@@ -48,19 +48,3 @@ Standard_K8S3_v1 4   6
 # }
 
 #endregion
-
-
-#distribute kubeconfig to other nodes (just to make it symmetric)
-#Jaromirk note: I think this would be useful to do with new-akshcicluster
-EnableCredSSP
-
-$FirstSession=New-PSSession -ComputerName ($HciServers | Select-Object -First 1)
-$OtherSessions=New-PSSession -ComputerName ($HciServers | Select-Object -Skip 1)
-#copy kube locally
-Copy-Item -Path "$env:userprofile\.kube" -Destination "$env:userprofile\Downloads" -FromSession $FirstSession -Recurse -Force
-#copy kube to other nodes
-Foreach ($OtherSession in $OtherSessions){
-    Copy-Item -Path "$env:userprofile\Downloads\.kube" -Destination $env:userprofile -ToSession $OtherSession -Recurse -Force
-}
-
-DisableCredSSP

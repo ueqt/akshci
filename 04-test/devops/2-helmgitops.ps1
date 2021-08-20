@@ -36,13 +36,17 @@
 
 .\az_k8sconfig_helm_aks.ps1
 
-kubectl get pods -n prod
-kubectl get pods -n cluster-mgmt
-kubectl get svc -n prod
-# kubectl get ing -n prod
+kubectl get all -n prod
+kubectl get all -n cluster-mgmt
+kubectl get ing -n prod
 
 # kubectl exec hello-arc-5ff797bd9d-vt8ph -n prod -it -- /bin/bash
 kubectl get pods -n prod -w
+
+helm list -A
+helm get all hello-arc-helm-prod -n prod
+
+# kubectl log hello-arc-prod-xxx -n prod
 
 # kubectl get all --all-namespaces -l=helm.toolkit.fluxcd.io/name="hello-arc" -l=helm.toolkit.fluxcd.io/namespace="prod"
 
