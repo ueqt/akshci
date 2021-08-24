@@ -10,7 +10,7 @@ kubectl get pods -o wide
 
 kubectl exec ntttcp-linux-sender -it -- /bin/bash
 
-# ntttcp -s<reciverip> -t 300
+# ntttcp -s<reciverip> -t 300 -V
 
 kubectl logs ntttcp-linux-sender
 
@@ -23,3 +23,11 @@ docker run -p 5000-5200:5000-5200 ueqt/ntttcp:linux
 # curl -o C:\NTttcp.exe https://github.com/microsoft/ntttcp/releases/download/v5.36/NTttcp.exe
 
 kubectl apply -f ./yaml/ntttcp-service.yaml
+
+kubectl get svc
+
+# On mgmt
+# download https://github.com/microsoft/ntttcp
+ntttcp -s -m 8,*,<Cluster IP> -t 300 -v
+
+kubectl logs ntttcp-linux-reciever -f

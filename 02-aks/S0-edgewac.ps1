@@ -21,3 +21,9 @@ Start-Process msiexec.exe -Wait -ArgumentList "/i $env:USERPROFILE\Downloads\Win
 # update plugins
 
 #endregion install WAC
+
+#region install telnet
+
+Install-WindowsFeature Telnet-Client
+
+#endregion install telnet
