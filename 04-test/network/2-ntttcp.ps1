@@ -22,12 +22,10 @@ docker run -p 5000-5200:5000-5200 ueqt/ntttcp:linux
 
 # curl -o C:\NTttcp.exe https://github.com/microsoft/ntttcp/releases/download/v5.36/NTttcp.exe
 
-kubectl apply -f ./yaml/ntttcp-service.yaml
-
-kubectl get svc
-
 # On mgmt
 # download https://github.com/microsoft/ntttcp
+# windows must close firewall
+netsh advfirewall firewall add rule program=c:\adsso\ntttcp.exe name="ntttcp" protocol=any dir=in action=allow enable=yes profile=ANY
 ntttcp -s -m 8,*,<Cluster IP> -t 300 -v
 
 kubectl logs ntttcp-linux-reciever -f

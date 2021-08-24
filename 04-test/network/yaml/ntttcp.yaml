@@ -3,11 +3,13 @@ kind: Pod
 metadata:
   name: ntttcp-linux-reciever
 spec:
+  hostNetwork: true
   nodeSelector:
     "beta.kubernetes.io/os": linux
   containers:
     - name: ntttcp-linux-container
       image: ueqt/ntttcp:linux
+      imagePullPolicy: Always
 ---
 apiVersion: v1
 kind: Pod
@@ -19,3 +21,4 @@ spec:
   containers:
     - name: ntttcp-linux-container
       image: ueqt/ntttcp:linux
+      imagePullPolicy: Always
