@@ -60,3 +60,10 @@ kubectl get svc -n cattle-system
 
 # helm ls -A
 # helm uninstall rancher -n cattle-system
+
+# for use behind proxy
+#$env:HTTP_PROXY="http://ip:port"
+#$env:HTTPS_PROXY="http://ip:port"
+#helm ls
+#$env:HTTP_PROXY=""
+#$env:HTTPS_PROXY=""
