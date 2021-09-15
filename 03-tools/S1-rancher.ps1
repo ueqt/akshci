@@ -64,6 +64,8 @@ kubectl get svc -n cattle-system
 # for use behind proxy
 #$env:HTTP_PROXY="http://ip:port"
 #$env:HTTPS_PROXY="http://ip:port"
+#$env:NO_PROXY="localhost,ip1,ip2" # use kubectl cluster-info to see cp ip
 #helm ls
 #$env:HTTP_PROXY=""
 #$env:HTTPS_PROXY=""
+#$env:NO_PROXY=""
