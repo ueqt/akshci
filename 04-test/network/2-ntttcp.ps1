@@ -10,7 +10,9 @@ kubectl get pods -o wide
 
 kubectl exec ntttcp-linux-sender -it -- /bin/bash
 
-# ntttcp -s<reciverip> -t 300 -V
+# ntttcp -s<recieverip> -t 300 -V
+# to windows
+# ntttcp -s<recieverip> -t 300 -V -m 8,*,<recieverip> -N
 
 kubectl logs ntttcp-linux-sender
 
@@ -26,9 +28,9 @@ docker run -p 5000-5200:5000-5200 ueqt/ntttcp:linux
 # download https://github.com/microsoft/ntttcp
 # windows must close firewall
 netsh advfirewall firewall add rule program=c:\adsso\ntttcp.exe name="ntttcp" protocol=any dir=in action=allow enable=yes profile=ANY
-ntttcp -s -m 8,*,<Cluster IP> -t 300 -v
+ntttcp -s -m 8,*,<Cluster IP> -t 300 -v -ns
 
 kubectl logs ntttcp-linux-reciever -f
 
 # windows reciever
-ntttcp -r -m 8,*,0.0.0.0 -p 5000 -v
+ntttcp -r -m 8,*,0.0.0.0 -v
