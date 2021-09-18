@@ -29,3 +29,6 @@ netsh advfirewall firewall add rule program=c:\adsso\ntttcp.exe name="ntttcp" pr
 ntttcp -s -m 8,*,<Cluster IP> -t 300 -v
 
 kubectl logs ntttcp-linux-reciever -f
+
+# windows reciever
+ntttcp -r -m 8,*,0.0.0.0 -p 5000 -v
