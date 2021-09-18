@@ -35,3 +35,6 @@ curl.exe --resolve cafe.lab.local:$($IC_HTTPS_PORT):$($IC_IP) "https://cafe.lab.
 curl.exe --resolve cafe.lab.local:$($IC_HTTPS_PORT):$($IC_IP) "https://cafe.lab.local:$($IC_HTTPS_PORT)/coffee" --insecure
 curl.exe --resolve cafe.lab.local:$($IC_HTTPS_PORT):$($IC_IP) "https://cafe.lab.local:$($IC_HTTPS_PORT)/tea" --insecure
 curl.exe --resolve cafe.lab.local:$($IC_HTTPS_PORT):$($IC_IP) "https://cafe.lab.local:$($IC_HTTPS_PORT)/tea" --insecure
+
+# set default namespace
+kubectl config set-context $(kubectl config current-context) --namespace=default
