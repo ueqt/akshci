@@ -4,8 +4,13 @@ metadata:
   name: ctstraffic-reciever
 spec:
   hostNetwork: true
-  nodeSelector:
-    "beta.kubernetes.io/os": windows
+  nodeSelector: 
+    kubernetes.io/os: windows
+  tolerations:
+    - key: "type"
+      operator: "Equal"
+      value: "windows"
+      effect: "NoSchedule"
   containers:
     - name: ctstraffic-container
       image: ueqt/ctstraffic:latest
@@ -16,8 +21,13 @@ kind: Pod
 metadata:
   name: ctstraffic-sender
 spec:
-  nodeSelector:
-    "beta.kubernetes.io/os": windows
+  nodeSelector: 
+    kubernetes.io/os: windows
+  tolerations:
+    - key: "type"
+      operator: "Equal"
+      value: "windows"
+      effect: "NoSchedule"
   containers:
     - name: ctstraffic-container
       image: ueqt/ctstraffic:latest
